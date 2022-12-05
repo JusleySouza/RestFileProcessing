@@ -38,4 +38,15 @@ class RestfileprocessingApplicationTests {
 		System.out.println(response.getBody());
 	}
 
+	@Test
+	void testDownload() throws IOException {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+		String fileName = "pp.jpg";
+		ResponseEntity<byte[]> response = restTemplate.exchange(DOWNLOAD_URL + fileName, HttpMethod.GET, httpEntity,
+				byte[].class);
+		Files.write(Paths.get(DOWNLOAD_PATH + fileName), response.getBody());
+	}
+	
 }
